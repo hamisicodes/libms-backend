@@ -16,3 +16,6 @@ class Book(models.Model):
         max_length=100,
         verbose_name="book_category"
     )
+
+    def __str__(self) -> str:
+        return str(self.title)
