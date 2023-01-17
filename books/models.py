@@ -19,3 +19,14 @@ class Book(models.Model):
 
     def __str__(self) -> str:
         return str(self.title)
+
+
+class IssuedBook(models.Model):
+    student_name =  models.CharField(max_length=100)
+    student_email = models.CharField(max_length=100)
+    title = models.CharField("book_title", max_length=100)
+    issue_date = models.DateTimeField()
+    return_date = models.DateTimeField()
+
+    def __str__(self) -> str:
+        return str(self.title)
