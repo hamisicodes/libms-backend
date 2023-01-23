@@ -24,8 +24,8 @@ class EditBookView(APIView):
     def patch(self, request, format=None):
         try:
             resource =  Book.objects.get(id=request.data.get("id"))
-        except Exception as e:
-            return Response({"Book id not found"}, status=status.HTTP_400_BAD_REQUEST)
+        except Book.DoesNotExist:
+            return Response({"error" : "Book id not found"}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer =  BookSerializer(resource, data=request.data, partial=True)
         if serializer.is_valid():
@@ -33,6 +33,16 @@ class EditBookView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteBookView(APIView):
+    def delete(self, request, pk=None):
+        try:
+            resource = Book.objects.get(pk=pk)
+            resource.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Book.DoesNotExist:
+            return Response({"error": "Book does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class IssuedBookView(APIView):
