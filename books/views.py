@@ -20,6 +20,21 @@ class BookListView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class EditBookView(APIView):
+    def patch(self, request, format=None):
+        try:
+            resource =  Book.objects.get(id=request.data.get("id"))
+        except Exception as e:
+            return Response({"Book id not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer =  BookSerializer(resource, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class IssuedBookView(APIView):
     def get(self, request, format=None):
         issued_books = IssuedBook.objects.all()
@@ -33,4 +48,6 @@ class IssuedBookView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
