@@ -134,5 +134,6 @@ AUTH_USER_MODEL = 'user.CustomUser'
 CORS_ALLOWED_ORIGINS = [
 
     "http://localhost:3000",
-  
+    "https://libms.vercel.app"
+
 ]
